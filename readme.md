@@ -17,6 +17,10 @@ $ composer require majidalaeinia/vandarnovausers
 
 ## Usage
 
+```bash
+php artisan vandar:import-vandar-nova-users
+```
+
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
