@@ -35,7 +35,7 @@ class ImportVandarNovaUsersCommand extends Command
      *
      * @param Carbon $now
      */
-    public function __construct(Carbon $now)
+    public function __construct()
     {
         parent::__construct();
         $this->now = Carbon::now();
@@ -56,7 +56,7 @@ class ImportVandarNovaUsersCommand extends Command
                       'id'         => 1,
                       'name'       => 'Mohammad Maghsoudi',
                       'email'      => 'maghsoudi@jamal.com',
-                      'password'   => Hash::make('password'),
+                      'password'   => $this->generateHashedPassword(),
                       'created_at' => $this->now,
                       'updated_at' => $this->now,
                  ],
@@ -64,7 +64,7 @@ class ImportVandarNovaUsersCommand extends Command
                       'id'         => 3,
                       'name'       => 'Mehdi Ebadi',
                       'email'      => 'ebadi@jamal.com',
-                      'password'   => Hash::make('password'),
+                      'password'   => $this->generateHashedPassword(),
                       'created_at' => $this->now,
                       'updated_at' => $this->now,
                  ],
@@ -72,7 +72,7 @@ class ImportVandarNovaUsersCommand extends Command
                       'id'         => 4,
                       'name'       => 'Amin Ahmadi',
                       'email'      => 'ahmadi@jamal.com',
-                      'password'   => Hash::make('password'),
+                      'password'   => $this->generateHashedPassword(),
                       'created_at' => $this->now,
                       'updated_at' => $this->now,
                  ],
@@ -84,5 +84,10 @@ class ImportVandarNovaUsersCommand extends Command
         } else {
             $this->warn("This command can be run on local environments only.");
         }
+    }
+
+    private function generateHashedPassword($password = 'password')
+    {
+        return Hash::make($password);
     }
 }
