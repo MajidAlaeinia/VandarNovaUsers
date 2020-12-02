@@ -38,6 +38,7 @@ class ImportVandarNovaUsersCommand extends Command
     public function __construct()
     {
         parent::__construct();
+
         $this->now = Carbon::now();
     }
 
@@ -51,43 +52,63 @@ class ImportVandarNovaUsersCommand extends Command
     public function handle(): void
     {
         if (env('APP_ENV') == 'local') {
-            $users = [
-                 [
-                      'id'         => 1,
-                      'name'       => 'Mohammad Maghsoudi',
-                      'email'      => 'maghsoudi@jamal.com',
-                      'password'   => $this->generateHashedPassword(),
-                      'created_at' => $this->now,
-                      'updated_at' => $this->now,
-                 ],
-                 [
-                      'id'         => 3,
-                      'name'       => 'Mehdi Ebadi',
-                      'email'      => 'ebadi@jamal.com',
-                      'password'   => $this->generateHashedPassword(),
-                      'created_at' => $this->now,
-                      'updated_at' => $this->now,
-                 ],
-                 [
-                      'id'         => 4,
-                      'name'       => 'Amin Ahmadi',
-                      'email'      => 'ahmadi@jamal.com',
-                      'password'   => $this->generateHashedPassword(),
-                      'created_at' => $this->now,
-                      'updated_at' => $this->now,
-                 ],
-            ];
             DB::table('users')->truncate();
-            foreach ($users as $user) {
+            foreach ($this->getGeneratedUser() as $user) {
                 DB::table('users')->insert($user);
             }
+
+            $this->info('Users was imported successfully');
         } else {
             $this->warn("This command can be run on local environments only.");
         }
     }
 
+    /**
+     * Hash the input value and return it (by default 'password' will be hashed)
+     *
+     * @param  string  $password
+     *
+     * @return mixed
+     */
     private function generateHashedPassword($password = 'password')
     {
         return Hash::make($password);
+    }
+
+    /**
+     * Generate manual users and return it
+     *
+     * @return array[]
+     */
+    private function getGeneratedUser()
+    {
+        $users = [
+            [
+                'id' => 1,
+                'name' => 'Mohammad Maghsoudi',
+                'email' => 'maghsoudi@jamal.com',
+                'password' => $this->generateHashedPassword(),
+                'created_at' => $this->now,
+                'updated_at' => $this->now,
+            ],
+            [
+                'id' => 3,
+                'name' => 'Mehdi Ebadi',
+                'email' => 'ebadi@jamal.com',
+                'password' => $this->generateHashedPassword(),
+                'created_at' => $this->now,
+                'updated_at' => $this->now,
+            ],
+            [
+                'id' => 4,
+                'name' => 'Amin Ahmadi',
+                'email' => 'ahmadi@jamal.com',
+                'password' => $this->generateHashedPassword(),
+                'created_at' => $this->now,
+                'updated_at' => $this->now,
+            ],
+        ];
+
+        return $users;
     }
 }
